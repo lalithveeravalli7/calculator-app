@@ -1,20 +1,31 @@
 /* ============================================================
-   history.css — Calculation history panel styles
+   history.css — History panel (right-side, fixed height, scrollable)
    ============================================================ */
 
-/* ── Section wrapper ── */
+/* ── Panel card (sits beside .calc) ── */
 .history-section {
-  margin-top: 1.25rem;
-  border-top: 1px solid var(--border-light);
-  padding-top: 1rem;
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--bg-calc);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-calc);
+  padding: 1.25rem 1rem;
+  box-shadow: var(--shadow-calc);
+  transition: background 0.3s, box-shadow 0.3s;
+
+  /* Match calculator height — history scrolls internally */
+  display: flex;
+  flex-direction: column;
+  max-height: 580px;       /* roughly the calculator's height */
 }
 
-/* ── Header row: title + clear button ── */
+/* ── Header row ── */
 .history-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  flex-shrink: 0;          /* never squish the header */
 }
 
 .history-title {
@@ -39,68 +50,75 @@
 }
 .history-clear-btn:hover { background: var(--bg-hover); }
 
-/* ── Scrollable list ── */
+/* ── Scrollable list — this is the only thing that scrolls ── */
 .history-list {
-  max-height: 160px;
-  overflow-y: auto;
+  flex: 1;                 /* fill remaining height inside panel */
+  overflow-y: auto;        /* scroll only this element */
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  /* Custom scrollbar */
+  gap: 6px;
+  padding-right: 2px;      /* room for scrollbar */
+
+  /* Custom thin scrollbar */
   scrollbar-width: thin;
   scrollbar-color: var(--border-main) transparent;
 }
 
 .history-list::-webkit-scrollbar       { width: 4px; }
 .history-list::-webkit-scrollbar-track { background: transparent; }
-.history-list::-webkit-scrollbar-thumb { background: var(--border-main); border-radius: 2px; }
+.history-list::-webkit-scrollbar-thumb {
+  background: var(--border-main);
+  border-radius: 2px;
+}
 
 /* ── Empty state ── */
 .history-empty {
   font-family: var(--font-ui);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
   text-align: center;
-  padding: 1rem 0;
+  padding: 2rem 0;
 }
 
 /* ── Individual history row ── */
 .history-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background: var(--bg-surface);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-btn);
-  padding: 6px 10px;
+  padding: 7px 10px;
   cursor: pointer;
   transition: background 0.15s;
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .history-item:hover { background: var(--bg-hover); }
 
-/* Click to reuse — tooltip hint */
-.history-item:hover .history-expr::after {
-  content: ' (tap to reuse)';
-  font-size: 10px;
-  color: var(--color-op);
-}
-
+/* Expression line (e.g. "3 + 4") */
 .history-expr {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
-  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Result line (e.g. "7") */
 .history-result {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-primary);
   font-weight: 500;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tap-to-reuse hint on hover */
+.history-item:hover .history-expr::after {
+  content: ' ↩ reuse';
+  font-size: 9px;
+  color: var(--color-op);
 }
