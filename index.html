@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculator App</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="./manifest.json"/>
+  <meta name="theme-color" content="#185fa5"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <!-- Stylesheets (order matters) -->
+  <link rel="stylesheet" href="./css/base.css"/>
+  <link rel="stylesheet" href="./css/calculator.css"/>
+  <link rel="stylesheet" href="./css/converter.css"/>
+  <link rel="stylesheet" href="./css/history.css"/>
+</head>
+<body>
+
+  <!-- ── Theme toggle (top-right) ── -->
+  <button id="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+
+  <div class="calc">
+
+    <!-- ── Display ── -->
+    <div class="display-box">
+      <div class="display-memory" id="mem-indicator"></div>
+      <div class="display-expr"   id="expr"></div>
+      <div class="display-main"   id="main">0</div>
+    </div>
+
+    <!-- ── Mode Tabs ── -->
+    <div class="mode-tabs">
+      <button class="mode-btn active" onclick="setMode('std')">Standard</button>
+      <button class="mode-btn"        onclick="setMode('sci')">Scientific</button>
+      <button class="mode-btn"        onclick="setMode('conv')">Converter</button>
+    </div>
+
+    <!-- ════════════════════════════════════
+         STANDARD MODE
+    ════════════════════════════════════ -->
+    <div id="panel-std" class="grid grid-std">
+      <button class="btn clear" onclick="ac()">AC</button>
+      <button class="btn op"    onclick="toggleSign()">+/−</button>
+      <button class="btn op"    onclick="pct()">%</button>
+      <button class="btn op"    onclick="op('/')">÷</button>
+
+      <button class="btn" onclick="digit('7')">7</button>
+      <button class="btn" onclick="digit('8')">8</button>
+      <button class="btn" onclick="digit('9')">9</button>
+      <button class="btn op" onclick="op('*')">×</button>
+
+      <button class="btn" onclick="digit('4')">4</button>
+      <button class="btn" onclick="digit('5')">5</button>
+      <button class="btn" onclick="digit('6')">6</button>
+      <button class="btn op" onclick="op('-')">−</button>
+
+      <button class="btn" onclick="digit('1')">1</button>
+      <button class="btn" onclick="digit('2')">2</button>
+      <button class="btn" onclick="digit('3')">3</button>
+      <button class="btn op" onclick="op('+')">+</button>
+
+      <button class="btn zero" onclick="digit('0')">0</button>
+      <button class="btn"      onclick="dot()">.</button>
+      <button class="btn eq"   onclick="eq()">=</button>
+    </div>
+
+    <!-- ════════════════════════════════════
+         SCIENTIFIC MODE
+    ════════════════════════════════════ -->
+    <div id="panel-sci" class="grid grid-sci" style="display:none">
+      <!-- Row 1: trig + log -->
+      <button class="btn fn" onclick="sciOp('sin')">sin</button>
+      <button class="btn fn" onclick="sciOp('cos')">cos</button>
+      <button class="btn fn" onclick="sciOp('tan')">tan</button>
+      <button class="btn fn" onclick="sciOp('log')">log</button>
+      <button class="btn fn" onclick="sciOp('ln')">ln</button>
+
+      <!-- Row 2: powers + misc -->
+      <button class="btn fn" onclick="sciOp('sqrt')">√</button>
+      <button class="btn fn" onclick="sciOp('pow2')">x²</button>
+      <button class="btn fn" onclick="sciOp('pow3')">x³</button>
+      <button class="btn fn" onclick="sciOp('inv')">1/x</button>
+      <button class="btn fn" onclick="sciOp('fact')">n!</button>
+
+      <!-- Row 3: constants + memory -->
+      <button class="btn fn"  onclick="sciOp('abs')">|x|</button>
+      <button class="btn fn"  onclick="sciConst('PI')">π</button>
+      <button class="btn fn"  onclick="sciConst('E')">e</button>
+      <button class="btn fn"  onclick="op('**')">xʸ</button>
+      <button class="btn clear" onclick="ac()">AC</button>
+
+      <!-- Row 4: memory buttons -->
+      <button class="btn mem" onclick="mPlus()">M+</button>
+      <button class="btn mem" onclick="mMinus()">M−</button>
+      <button class="btn mem" onclick="mRecall()">MR</button>
+      <button class="btn mem" onclick="mClear()">MC</button>
+      <button class="btn clear" onclick="bksp()">⌫</button>
+
+      <!-- Rows 5-7: digits + operators -->
+      <button class="btn" onclick="digit('7')">7</button>
+      <button class="btn" onclick="digit('8')">8</button>
+      <button class="btn" onclick="digit('9')">9</button>
+      <button class="btn op" onclick="op('/')">÷</button>
+      <button class="btn op" onclick="toggleSign()">+/−</button>
+
+      <button class="btn" onclick="digit('4')">4</button>
+      <button class="btn" onclick="digit('5')">5</button>
+      <button class="btn" onclick="digit('6')">6</button>
+      <button class="btn op" onclick="op('*')">×</button>
+      <button class="btn op" onclick="pct()">%</button>
+
+      <button class="btn" onclick="digit('1')">1</button>
+      <button class="btn" onclick="digit('2')">2</button>
+      <button class="btn" onclick="digit('3')">3</button>
+      <button class="btn op" onclick="op('-')">−</button>
+      <button class="btn op" onclick="op('+')">+</button>
+
+      <button class="btn" onclick="digit('0')">0</button>
+      <button class="btn" onclick="dot()">.</button>
+      <button class="btn" onclick="digit('(')">(</button>
+      <button class="btn" onclick="digit(')')">)</button>
+      <button class="btn eq" onclick="eq()">=</button>
+    </div>
+
+    <!-- ════════════════════════════════════
+         CONVERTER MODE
+    ════════════════════════════════════ -->
+    <div id="panel-conv" style="display:none">
+      <div class="conv-row">
+        <div class="conv-label">Category</div>
+        <select id="conv-type" onchange="updateConvUnits()">
+          <option value="length">Length</option>
+          <option value="weight">Weight</option>
+          <option value="temp">Temperature</option>
+          <option value="area">Area</option>
+          <option value="speed">Speed</option>
+          <option value="data">Data Storage</option>
+          <option value="time">Time</option>
+          <option value="currency">Currency (approx)</option>
+        </select>
+      </div>
+      <div class="conv-pair">
+        <div class="conv-col">
+          <div class="conv-label">From</div>
+          <select id="conv-from" onchange="doConvert()"></select>
+        </div>
+        <div class="conv-arrow">→</div>
+        <div class="conv-col">
+          <div class="conv-label">To</div>
+          <select id="conv-to" onchange="doConvert()"></select>
+        </div>
+      </div>
+      <div class="conv-row">
+        <div class="conv-label">Value</div>
+        <input type="number" id="conv-input" oninput="doConvert()" value="1"/>
+      </div>
+      <div class="conv-result-box">
+        <div class="conv-result-label">Result</div>
+        <div class="conv-result-value" id="conv-result">1</div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         HISTORY PANEL (below all modes)
+    ════════════════════════════════════ -->
+    <div class="history-section">
+      <div class="history-header">
+        <span class="history-title">History</span>
+        <button class="history-clear-btn" onclick="clearHistory()">Clear</button>
+      </div>
+      <div id="history-list" class="history-list">
+        <div class="history-empty">No calculations yet</div>
+      </div>
+    </div>
+
+  </div><!-- /.calc -->
+
+  <!-- JavaScript files (loaded last so HTML exists first) -->
+  <script src="./js/calculator.js"></script>
+  <script src="./js/converter.js"></script>
+  <script src="./js/history.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

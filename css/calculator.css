@@ -1,0 +1,144 @@
+/* ============================================================
+   calculator.css — Shell, display, mode tabs, all button styles
+   ============================================================ */
+
+/* ── Outer shell ── */
+.calc {
+  background: var(--bg-calc);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-calc);
+  padding: 1.5rem;
+  width: 340px;
+  box-shadow: var(--shadow-calc);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* ── Display box ── */
+.display-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 2px;
+  transition: background 0.3s;
+}
+
+/* Memory indicator (shows "M" when memory has a value) */
+.display-memory {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--color-mem);
+  min-height: 14px;
+  align-self: flex-start;
+  letter-spacing: 1px;
+}
+
+.display-expr {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--text-muted);
+  min-height: 18px;
+  word-break: break-all;
+  text-align: right;
+}
+
+.display-main {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--text-primary);
+  word-break: break-all;
+  text-align: right;
+  transition: color 0.3s;
+}
+
+.display-main.error {
+  color: var(--color-clear);
+  font-size: 18px;
+}
+
+/* ── Mode tabs ── */
+.mode-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.mode-btn {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  padding: 6px 0;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border-main);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mode-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mode-btn:hover:not(.active) { background: var(--bg-hover); }
+
+/* ── Button grid layouts ── */
+.grid {
+  display: grid;
+  gap: 8px;
+}
+
+.grid-std { grid-template-columns: repeat(4, 1fr); }
+.grid-sci { grid-template-columns: repeat(5, 1fr); }
+
+/* ── Base button ── */
+.btn {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border-main);
+  height: 52px;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s, color 0.3s;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.btn:hover  { background: var(--bg-hover); }
+.btn:active { transform: scale(0.95); background: var(--bg-active); }
+
+/* Operator */
+.btn.op { color: var(--color-op); font-weight: 500; }
+
+/* Equals */
+.btn.eq {
+  background: var(--color-op);
+  color: #ffffff;
+  border-color: var(--color-op);
+  font-size: 20px;
+}
+.btn.eq:hover { background: var(--color-op-dk); }
+
+/* Scientific function */
+.btn.fn { font-size: 12px; color: var(--color-fn); }
+.btn.fn:hover { background: var(--bg-sci-fn); }
+
+/* Memory */
+.btn.mem { font-size: 12px; color: var(--color-mem); }
+.btn.mem:hover { background: var(--bg-mem); }
+
+/* Clear / backspace */
+.btn.clear { color: var(--color-clear); }
+
+/* Zero spans 2 columns in standard mode */
+.btn.zero { grid-column: span 2; }
