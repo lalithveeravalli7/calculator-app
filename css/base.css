@@ -80,6 +80,13 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* ── App wrapper: calculator left, history right ── */
+.app-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
 /* ── Theme toggle button ── */
 #theme-btn {
   position: fixed;
