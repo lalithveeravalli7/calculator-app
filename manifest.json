@@ -1,4 +1,5 @@
 {
+  "id": "/calculator-app/index.html",
   "name": "Calculator App",
   "short_name": "Calc",
   "description": "A full-featured calculator with scientific mode, unit converter, history and dark mode.",
